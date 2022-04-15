@@ -1,0 +1,68 @@
+% Template laporan ini dibuat dengan harapan untuk standardisasi laporan praktikum pada lingkungan DTEDI SV UGM, agar semua laporan praktikum konsisten secara format dan hasil cetak laporan.
+% Saran dan perbaikan sangat diperlukan agar template ini dapat digunakan oleh semua orang. bila ada saran, silahkan hubungi author melalui linkedin : Alim Satria
+% Dibuat oleh : Alim Satria Fi'i Wijaya Kusuma
+
+\documentclass[12 pt]{article}
+\usepackage[a4paper, total={6in, 9in}]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage{color}
+\usepackage[bahasa]{babel}
+\usepackage{float}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{setspace}
+\usepackage{indentfirst}
+\usepackage{subfiles}
+
+\renewcommand \thesection{\Roman{section}.}
+\renewcommand \thesubsection{\arabic{section}.\arabic{subsection}.}
+\renewcommand \thesubsubsection{\arabic{section}.\arabic{subsection}.\arabic{subsubsection}.}
+\renewcommand \figurename{Gambar}
+\renewcommand \thefigure {\arabic{section}.\arabic{subsection}.\arabic{figure} } %kustom nomor gambar dengan format (section.subsection.urutan_figure)
+\renewcommand \tablename{Tabel}
+\renewcommand \thetable {\arabic{section}.\arabic{subsection}.\arabic{table} } %kustom nomor tabel dengan format (section.subsection.urutan_tabel)
+\renewcommand \theequation{\arabic{section}.\arabic{equation}} %kustom pemomoran persamaan matematika (section.urutan_persamaan)
+\setlength{\tabcolsep}{10pt} %kustom spacing coloumn tabel (default = 6pt)
+\renewcommand{\arraystretch}{1.5} %kustom spacing row tabel (default = 1)
+
+\title{\large \textbf{LAPORAN PRAKTIKUM SISTEM KENDALI DASAR} \\ \textbf{KARAKTERISTIK RESPON SISTEM}\linebreak}
+\author{}
+\date{}
+\onehalfspacing
+
+\begin{document}
+
+\clearpage
+\maketitle
+\thispagestyle{empty} %menghapus penomoran pada cover
+
+\begin{center}
+\includegraphics[width=5cm,height=5cm]{cover_laporan/logo_ugm.png}
+\end{center}
+
+\vspace{1 cm}
+
+\begin{center}
+\begin{tabular}{lcl}
+Nama & : & Alim Satria Fi'i Wijaya Kusuma \\
+NIM & : & 21/483503/SV/20304\\
+Kelas & : & IKPBB\\
+Tanggal & : & 15 Maret 2022
+\end{tabular}
+\newline
+\newline
+\newline
+\newline
+\newline
+\large{\textbf{PROGRAM STUDI TEKNOLOGI REKAYASA INSTRUMENTASI DAN KONTROL}} \\
+\textbf{SEKOLAH VOKASI UNIVERSITAS GADJAH MADA} \\
+\textbf{2022}
+\end{center}
+
+\pagebreak
+
+\subfile{sections/ringkasan_materi}
+\subfile{sections/hasil_pembahasan}
+\subfile{sections/kesimpulan}
+
+\end{document}
