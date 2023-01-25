@@ -1,0 +1,236 @@
+\documentclass[../main.tex]{subfiles}
+
+\begin{document}
+    \section{Tujuan}
+        Tujuan dari praktikum ini sebagai berikut,
+        \begin{enumerate}
+            \item Memahami proses konversi representasi state space ke bentuk representasi fungsi alih
+            \item Memahami proses identifikasi sistem dengan perangkat lunak MATLAB
+        \end{enumerate}
+    \section{Dasar Teori}
+        Representasi \textit{state space} dapat digunakan untuk mempresentasikan sistem MIMO (\textit{Multi Input Multi Output}). Sistem MIMO memiliki jumlah fungsi transfer sistem sama dengan jumlah kombinasi dari input dan outputnya. Dalam pengujian sistem secara langsung, banyak sistem yang tidak diketahui parameter dan karakteristiknya. Oleh karena itu, dibutuhkan cara untuk mengidentifikasi parameter sistem serta mempelajari karakteristik sistem dari representasi model sistem. Identifikasi terbagi atas dua jenis yaitu, \textit{black box modelling} dan \textit{grey box modelling}. \textit{black box modelling} merupakan metode identifikasi sistem yang hanya diketahui nilai \textit{input} dan nilai \textit{output} sistem saja. \textit{grey box modelling} merupakan pemodelan sistem yang mencari parameter dari sistem yang telah diketahui model matematisnya\cite{Fahmizal}.
+    \section{Hasil dan Pembahasan}
+        \subsection{Pemodelan Motor DC}
+            \subsubsection{Pemodelan state space}
+                \begin{figure}[H]
+                    \centering\includegraphics[width = 0.7\textwidth]{assets/image/pemodelan_motor.png}
+                    \caption{Sistem Model Elektrik dan Mekanik Motor DC}
+                    \label{gambar_1}
+                \end{figure}
+                Persamaan rangkaian elektrik pada motor dapat dianalisa dengan hukum kirchoff sebagai berikut,
+                \begin{equation}
+                    \begin{split}
+                        e_a - e_{ggl} &= L_a\frac{di_a}{dt} + R_a i_a \\[5pt]
+                        e_a &= L_a \frac{di_a}{dt} + R_a i_a + e_{ggl}
+                    \end{split}
+                \end{equation}
+                \begin{equation}
+                    \begin{split}
+                        e_{ggl} &= K_m i_f \frac{d\theta}{dt} \\[5pt]
+                        e_{ggl} &= K_m \frac{d\theta}{dt}
+                    \end{split}
+                \end{equation}
+                \begin{equation}
+                    \begin{split}
+                        e_a &= L_a\frac{di_a}{dt} + R_a i_a + K_m\frac{d\theta}{dt} \\[5pt]
+                        L_a\frac{di_a}{dt} &= -K_m\frac{d\theta}{dt} - R_a i_a + e_a \\[5pt]
+                        \frac{di_a}{dt} &= -\frac{K_m}{L_a}\frac{d\theta}{dt} - \frac{R_a}{L_a}i_a + \frac{1}{L_a}e_a \\[5pt]
+                        \dot{i_a} &= -\frac{K_m}{L_a}\dot{\theta} - \frac{R_a}{L_a}i_a + \frac{1}{L_a}e_a
+                    \end{split}
+                \end{equation}
+                Hubungan torsi motor terhadap inertia dan gesekan viskos dapat dianalisa dengan persamaan berikut,
+                \begin{equation}
+                    \begin{split}
+                        \sum T &= J\alpha \\[5pt]
+                        T - B\frac{d\theta}{dt} &= J\frac{d^2\theta}{dt^2} \\[5pt]
+                        T &= J\frac{d^2\theta}{dt^2} + B\frac{d\theta}{dt}
+                    \end{split}
+                \end{equation}
+                \begin{equation}
+                    \begin{split}
+                        B &= \frac{\mu_f n_f i_f}{2\pi l_f} \\[5pt]
+                        B &= K_B i_f \\[5pt]
+                    \end{split}
+                \end{equation}
+                \begin{equation}
+                    \begin{split}
+                        T &= K_B i_f i_a l_a r_a n_a \\[5pt]
+                        T &= K_{TM} i_f i_a \\[5pt]
+                        T &= K_{TM} i_a
+                    \end{split}
+                \end{equation}
+                \begin{equation}
+                    \begin{split}
+                        J\frac{d^2\theta}{dt^2} + B\frac{d\theta}{dt} &= K_{TM} i_a \\[5pt]
+                        -B \frac{d\theta}{dt} + K_{TM}i_a &= J\frac{d^2\theta}{dt^2} \\[5pt]
+                        -\frac{B}{J}\frac{d\theta}{dt} + \frac{K_{TM}}{J}i_a &= \frac{d^2\theta}{dt^2} \\[5pt]
+                        -\frac{B}{J}\dot{\theta} + \frac{K_{TM}}{J}i_a &= \ddot{\theta}
+                    \end{split}
+                \end{equation}
+                Dari persamaan diatas, dibuat aturan penamaan state sebagai berikut,
+                \begin{equation}
+                \begin{split}
+                    x_1 &= \dot{\theta} \\[5pt]
+                    \dot{x_1} &= \ddot{\theta} \\[5pt]
+                    x_2 &= i_a \\[5pt]
+                    \dot{x_2} &= \dot{i_a}
+                    \label{persamaan_17}
+                \end{split}
+                \end{equation}
+                Dari peraturan penamaan state diatas, persamaan eletrik dan mekanik dapat disubtitusi dengan aturan sebagai berikut,
+                \begin{equation}
+                    \begin{split}
+                        \dot{x_2} &= -\frac{K_m}{L_a}x_1 - \frac{R_a}{L_a}x_2 + \frac{1}{L_a}e_a \\[5pt]
+                        \dot{x_1} &= -\frac{B}{J}x_1 + \frac{K_{TM}}{J}x_2
+                    \end{split}
+                \end{equation}
+                Dari persamaan diatas dapat disusun pemodelan sistem state space dan fungsi output sebagai berikut,
+                \begin{equation}
+                    \begin{split}
+                        \dot{x} &= Ax + Bu \\[5pt]
+                        \begin{bmatrix} \dot{x_1} \\ \dot{x_2} \end{bmatrix} &= \begin{bmatrix} -\frac{B}{J} & \frac{K_{TM}}{J} \\ -\frac{K_m}{L_a} & -\frac{R_a}{L_a} \end{bmatrix} \begin{bmatrix}
+                        x_1 \\ x_2 \end{bmatrix} + \begin{bmatrix}
+                        0 \\ \frac{1}{L_a}\end{bmatrix}e_a
+                    \end{split}
+                \end{equation}
+                \begin{equation}
+                    \begin{split}
+                        y &= Cx + Du \\[5pt]
+                        y &= \begin{bmatrix} 1 & 0 \end{bmatrix} \begin{bmatrix} x_1 \\ x_2 \end{bmatrix}
+                    \end{split}
+                \end{equation}
+            \subsubsection{Mengubah state space ke fungsi alih}
+                Pemodelan state space kecepatan motor DC dapat diubah menjadi fungsi alih sebagai berikut,
+                \begin{equation}
+                    \begin{split}
+                        G_{(s)} &= C(sI - A)^{-1}B \\[5pt]
+                        G_{(s)} &= \begin{bmatrix} 1 & 0 \end{bmatrix}\left( \begin{bmatrix} s & 0 \\ 0 & s \end{bmatrix} - \begin{bmatrix} -\frac{B}{J} & \frac{K_{TM}}{J} \\ -\frac{K_m}{L_a} & -\frac{R_a}{L_a} \end{bmatrix} \right)^{-1} \begin{bmatrix} 0 \\ \frac{1}{L_a}  \end{bmatrix}\\[5pt]
+                        G_{(s)} &= \begin{bmatrix} 1 & 0 \end{bmatrix} \left( \begin{bmatrix} (s+\frac{B}{J}) & -\frac{K_{TM}}{J} \\ \frac{K_m}{L_a} & (s+\frac{R}{L_a}) \end{bmatrix} \right)^{-1} \begin{bmatrix} 0 \\ \frac{1}{L_a} \end{bmatrix} \\[5pt]
+                        G_{(s)} &= \begin{bmatrix} 1 & 0 \end{bmatrix} \ffrac{1}{s^2 + \left( \frac{R_a}{L_a} + \frac{B}{J} \right)s + \frac{R_a B}{L_a J} + \frac{K_{TM} K_m}{L_a J}} \begin{bmatrix} (s + \frac{R_a}{L_a}) & \frac{K_{TM}}{J} \\ -\frac{K_m}{L_a} & (s + \frac{B}{J}) \end{bmatrix} \begin{bmatrix} 0 \\ \frac{1}{L_a} \end{bmatrix} \\[5pt]
+                        G_{(s)} &= \begin{bmatrix} 1 & 0 \end{bmatrix} \ffrac{1}{s^2 + \left( \frac{R_a}{L_a} + \frac{B}{J} \right)s + \frac{R_a B}{L_a J} + \frac{K_{TM} K_m}{L_a J}} \begin{bmatrix} \frac{K_{TM}}{L_a J} \\ \left( \frac{s}{L_a} + \frac{B}{L_a J} \right) \end{bmatrix}\\[5pt]
+                        G_{(s)} &= \ffrac{1}{s^2 + \left( \frac{R_a}{L_a} + \frac{B}{J} \right)s + \frac{R_a B}{L_a J} + \frac{K_{TM} K_m}{L_a J}} \hspace{1.5mm} \frac{K_{TM}}{L_a J} \\[5pt]
+                        G_{(s)} &= \ffrac{K_{TM}}{J L_a s^2 + (R_a J + B L_a)s + R_aB + K_{TM}K_m }
+                    \end{split}
+                \end{equation}
+            \subsubsection{Generate data dari pemodelan untuk identifikasi}
+                Hasil pemodelan fungsi alih dimasukkan ke simulink untuk menghasilkan data input dan output sebagai berikut,
+                \begin{figure}[H]
+                    \centering
+                    \includegraphics[width = 0.7\textwidth]{assets/image/INPUT.eps}
+                    \caption{Data input berupa sinyal step}
+                    \label{gambar_2}
+                \end{figure}
+                \begin{figure}[H]
+                    \centering
+                    \includegraphics[width = 0.7\textwidth]{assets/image/OUTPUT.eps}
+                    \caption{Data output berupa respon sistem}
+                    \label{gambar_3}
+                \end{figure}
+            \subsubsection{Identifikasi sistem dengan metode            polynomial dan ARX}
+                
+                \begin{figure}[H]
+                    \centering
+                    \includegraphics[width = 0.7\textwidth]{assets/image/ESTIMATION MODEL.pdf}
+                    \caption{Plot performansi metode estimasi ARX dengan transfer function}
+                    \label{fig:my_label}
+            \end{figure}
+        \subsection{Pemodelan state space pada sistem mekanik sederhana}
+            \begin{figure}[H]
+                \centering
+                \includegraphics[width = 0.5\textwidth]{assets/image/soal_pemodelan_pegas_damper.png}
+                \caption{Model mekanik beban yang digantungkan pada pegas dan damper}
+                \label{gambar_4}
+            \end{figure}
+            Pemodelan sistem mekanik diatas dapat dianalisis dengan persamaan newton sebagai berikut,
+            \begin{equation*}
+                \sum F = ma
+            \end{equation*}
+            \begin{equation}
+                \begin{split}
+                    u_1 - k_1y_1 - b(\dot{y_1} - \dot{y_2}) &= m\ddot{y_1} \\[5pt]
+                    -\frac{b}{m}(\dot{y_1} - \dot{y_2}) - \frac{k}{m} y_1 + \frac{1}{m} u_1 &= \ddot{y_1}\\[5pt]
+                    \frac{b}{m} \dot{y_2} - \frac{b}{m} \dot{y_1} - \frac{k}{m} y_1 + \frac{1}{m} u_1 &= \ddot{y_1}
+                    \label{persamaan_1}
+                \end{split}
+            \end{equation}
+            \begin{equation}
+                \begin{split}
+                    u_2 - b(\dot{y_2} - \dot{y_1}) - k y_2 &= m \ddot{y_2} \\[5pt]
+                    - \frac{b}{m} (\dot{y_2} - \dot{y_1}) - \frac{k}{m} y_2 + \frac{1}{m} u_2 &= m\ddot{y_2} \\[5pt]
+                    - \frac{b}{m} \dot{y_2} + \frac{b}{m} \dot{y_1} - \frac{k}{m} y_2 + \frac{1}{m} u_2 &= \ddot{y_2}
+                \end{split}
+            \end{equation}
+            Dari analisa newton diatas dibuat aturan penamaan state sebagai berikut,
+            \begin{equation}
+                \begin{split}
+                    x_1 &= y_1 \\[5pt]
+                    x_2 &= \dot{x_1} = \dot{y_1} \\[5pt]
+                    x_3 &= y_2 \\[5pt]
+                    x_4 &= \dot{x_3} = \dot{y_2} \\[5pt]
+                \end{split}
+            \end{equation}
+            Dari penamaan state diatas, hasil analisa newton dapat disubtitusikan dengan aturan penamaan state sebagai berikut,
+            \begin{equation}
+                \begin{split}
+                    \frac{b}{m} x_4 - \frac{b}{m} x_2 - \frac{k}{m} x_1 + \frac{1}{m} u_1 &= \dot{x_2} \\[5pt]
+                    - \frac{b}{m} x_4 + \frac{b}{m} x_2 - \frac{k}{m} x_3 + \frac{1}{m} u_2 &= \dot{x_4}
+                \end{split}
+            \end{equation}
+            Dari persamaan state diatas, didapatkan pemodelan sistem dan persamaan output sistem dalam bentuk state space sebagai berikut,
+            \begin{equation}
+                \begin{split}
+                    \dot{x} &= Ax +Bu \\[10pt]
+                    \begin{bmatrix} \dot{x_1} \\ \dot{x_2} \\ \dot{x_3} \\ \dot{x_4} \end{bmatrix} &= \begin{bmatrix} 0 & 1 & 0 & 0 \\ -\frac{k}{m} & -\frac{b}{m} & 0 & \frac{b}{m} \\ 0 & 0 & 0 & 1 \\ 0 & \frac{b}{m} & -\frac{k}{m} & -\frac{b}{m} \end{bmatrix} \begin{bmatrix} x_1 \\ x_2 \\ x_3 \\ x_4 \end{bmatrix} + \begin{bmatrix} 0 & 0 \\ \frac{1}{m_1} & 0 \\ 0 & 0 \\ 0 & \frac{1}{m_2} \end{bmatrix} \begin{bmatrix} u_1 \\ u_2 \end{bmatrix}
+                \end{split}
+            \end{equation}
+            \begin{equation}
+                \begin{split}
+                    y &= Cx + Du \\[5pt]
+                    \begin{bmatrix} y_1 \\ y_2 \end{bmatrix} &= \begin{bmatrix} 1 & 0 & 0 & 0 \\ 0 & 0 & 1& 0 \end{bmatrix} \begin{bmatrix} x_1 \\ x_2 \\ x_3 \\ x_4 \end{bmatrix}
+                \end{split}
+            \end{equation}
+        \subsection{Mengubah representasi sistem state space ke fungsi alih}
+            \subsubsection{Analisis perubahan representasi state space ke fungsi alih secara matematis}
+                \begin{equation}
+                    \begin{split}
+                        \dot{x} &= Ax + Bu \\[5pt]
+                        \begin{bmatrix} \dot{x_1} \\ \dot{x_2} \\ \dot{3} \end{bmatrix} &= \begin{bmatrix} 0 & 1 & 0 \\ 0 & 0 & 1 \\ -2 & -4 & -6 \end{bmatrix} \begin{bmatrix} x_1 \\ x_2 \\ x_3  \end{bmatrix} + \begin{bmatrix} 0 & 0 \\ 0 & 1 \\ 1 & 0 \end{bmatrix} \begin{bmatrix} u_1 \\ u_2 \end{bmatrix} \\[10pt]
+                        y &= Cx + Du \\[5pt]
+                        \begin{bmatrix} y_1 \\ y_2 \end{bmatrix} &= \begin{bmatrix} 1 & 0 & 0 \\ 0 & 1 & 0 \end{bmatrix} \begin{bmatrix} x_1 \\ x_2 \\ x_3 \end{bmatrix}
+                    \end{split}
+                \end{equation}
+                Persamaan diatas dapat diubah menjadi pemodelan fungsi alih dengan persamaan $G_{(s)} = C(sI - A)^{-1} B$ sebagai berikut,
+                \begin{equation}
+                    \begin{split}
+                        G_{(s)} &= C(sI - A)^{-1}B\\[5pt]
+                        G_{(s)} &= \begin{bmatrix} 1 & 0 & 0 \\ 0 & 1 & 0 \end{bmatrix} \left( \begin{bmatrix} s & 0 & 0 \\ 0 & s & 0 \\ 0 & 0 & s \end{bmatrix} - \begin{bmatrix} 0 & 1 & 0 \\ 0 & 0 & 1 \\ -2 & -4 & -6 \end{bmatrix} \right)^{-1} \begin{bmatrix} 0 & 0 \\ 0 & 1 \\ 1 & 0 \end{bmatrix} \\[5pt]
+                        G_{(s)} &= \begin{bmatrix} 1 & 0 & 0 \\ 0 & 1 & 0 \end{bmatrix} \left( \begin{bmatrix} s & -1 & 0 \\ 0 & s & -1 \\ 2 & 4 & (s+6)\end{bmatrix} \right)^{-1} \begin{bmatrix} 0 & 0 \\ 0 & 1 \\ 1 & 0 \end{bmatrix} \\[5pt]
+                            G_{(s)} &= \begin{bmatrix} 1 & 0 & 0 \\ 0 & 1 & 0 \end{bmatrix} \left( \ffrac{1}{s^3 + 6s^2 + 4s + 2} \begin{bmatrix} (s^2 + 6s + 4) & (s + 6) & 1 \\ -2 & (s^2+6s) & s \\ -2s & -4s-2 & s^2 \end{bmatrix} \right) \begin{bmatrix} 0 & 0 \\ 0 & 1 \\ 1 & 0 \end{bmatrix}\\[5pt]
+                        G_{(s)} &= \begin{bmatrix} 1 & 0 & 0 \\  0 & 1 & 0 \end{bmatrix} \ffrac{1}{s^3+6s^2+4s+2} \begin{bmatrix} 1 & (s+6) \\ s & (s^2 + 6) \\ s^2 & -4s-2 \end{bmatrix} \\[5pt]
+                        G_{(s)} &= \ffrac{1}{s^3 + 6s^2 + 4s + 2} \begin{bmatrix} 1 & (s+6) \\ s & (s^2+6s) \end{bmatrix}
+                    \end{split}
+                \end{equation}
+                Dari persamaan diatas didapatkan empat fungsi model sistem sebagai berikut,
+                \begin{equation}
+                    \begin{split}
+                        G_{(s)} &= \frac{1}{s^3 + 6s^2 + 4s + 2}\\[5pt]
+                        G_{(s)} &= \frac{s+6}{s^3 + 6s^2 + 4s + 2}\\[5pt]
+                        G_{(s)} &= \frac{s}{s^3 + 6s^2 + 4s + 2}\\[5pt]
+                        G_{(s)} &= \frac{s^2+6s}{s^3 + 6s^2 + 4s + 2}\\[5pt]
+                    \end{split}
+                \end{equation}
+            \subsubsection{Analisis perubahan model state space ke fungsi alih dengan MATLAB}
+                \lstinputlisting[language = Matlab]{assets/code/SS2TF.m}
+            Output program pada konsole MATLAB sebagai berikut,
+                \lstinputlisting[]{assets/code/output_SS2TF.m}
+            Dari output konsole MATLAB dapat diliha bahwa analisis secara matematis dan analisis dengan MATLAB memiliki hasil yang sama.
+    \section{Kesimpulan}
+        Dari hasil dan pembahasan diatas, didapat beberapa kesimpulan sebagai berikut,
+        \begin{enumerate}
+            \item konversi pemodelan state space ke pemodelan fungsi alih dapat dilakukan dengan persamaan $G_{(s)} = C(sI - A)^{-1} B$
+            \item konversi pemodelan sistem dari state space ke pemodelan fungsi alih pada MATLAB dilakukan dengan \textit{system identification toolbox}
+        \end{enumerate}
+    \begin{thebibliography}{2}
+        \bibitem[1]{Fahmizal} Fahmizal. 2020. "Pemodelan dan Identifikasi Sistem" dalam \textit{Modul Praktikum Teknik Kendali Lanjut} (hlm.1-8). Yogyakarta
+    \end{thebibliography}
+\end{document}
