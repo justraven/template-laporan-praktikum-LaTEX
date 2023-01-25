@@ -16,7 +16,7 @@ kerangka laporan bebas untuk digunakan dan diadopsi oleh siapapun, jangan lupa u
  ┣ 📜TEMPLATE_LAPORAN_PRAKTIKUM_LaTeX.pdf # dokumen hasil compile LaTEX
  ┗ 📜main.tex
  
- 📦CONTOH LAPORAN                         # folder berisi kumpulan contoh laporan ditulis dengan LaTEX
+ 📦CONTOH LAPORAN                         # folder berisi kumpulan contoh laporan
  ┣ 📂SKD
  ┗ 📂TKL
  
