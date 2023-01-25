@@ -1,12 +1,10 @@
 
 # Kerangka laporan praktikum LaTEX
-___
 
 Kerangka laporan lateX ini dibuat untuk memudahkan standardisasi bentuk laporan praktikum, memudahkan pihak dosen dan mahasiswa dalam membuat laporan praktikum dengan struktur yang jelas serta dapat dimodifikasi sesuai dengan kebutuhan.
 kerangka laporan bebas untuk digunakan dan diadopsi oleh siapapun, jangan lupa untuk mencantum credit kepada author. Saran dan perbaikan sangat dibutuhkan untuk perkembangan kerangka laporan ini.
 
 ## Struktur file
-___
 
 ```
 
@@ -25,7 +23,7 @@ ___
 ```
 
 ## Perangkat lunak yang digunakan
-___
+
 Perangkat lunak yang dapat digunakan untuk mengakses file ini antara lain,
 
 - TexStudio
@@ -34,6 +32,6 @@ Perangkat lunak yang dapat digunakan untuk mengakses file ini antara lain,
 *catatan penting :* gunakan compiler XeLaTEX untuk mengakses contoh laporan pada folder `TKL`.
 
 ## Pengembang
-___
+
 - [@justraven](https://github.com/justraven)
 
