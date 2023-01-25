@@ -2,7 +2,7 @@
 # Kerangka laporan praktikum LaTEX
 
 Kerangka laporan lateX ini dibuat untuk memudahkan standardisasi bentuk laporan praktikum, memudahkan pihak dosen dan mahasiswa dalam membuat laporan praktikum dengan struktur yang jelas serta dapat dimodifikasi sesuai dengan kebutuhan.
-kerangka laporan bebas untuk digunakan dan diadopsi oleh siapapun, jangan lupa untuk mencantum credit kepada author. Saran dan perbaikan sangat dibutuhkan untuk perkembangan kerangka laporan ini.
+kerangka laporan bebas untuk digunakan dan diadopsi oleh siapapun, jangan lupa untuk mencantum credit kepada pengembang. Saran dan perbaikan sangat dibutuhkan untuk perkembangan kerangka laporan ini.
 
 ## Struktur file
 
@@ -14,7 +14,7 @@ kerangka laporan bebas untuk digunakan dan diadopsi oleh siapapun, jangan lupa u
  ┣ 📂gambar_praktikum                     # folder gambar
  ┃ ┗ 📜gambar_pid.png                     # file gambar
  ┣ 📜TEMPLATE_LAPORAN_PRAKTIKUM_LaTeX.pdf # dokumen hasil compile LaTEX
- ┗ 📜main.tex
+ ┗ 📜main.tex                             # file utama LaTEX
  
  📦CONTOH LAPORAN                         # folder berisi kumpulan contoh laporan
  ┣ 📂SKD
