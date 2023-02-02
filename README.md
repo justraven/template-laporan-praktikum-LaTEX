@@ -1,6 +1,8 @@
 
 # Kerangka laporan praktikum LaTEX
 
+[<img src="https://img.shields.io/badge/LaTeX-47A141?style=for-the-badge&logo=LaTeX&logoColor=white"/>]  [<img src="https://img.shields.io/badge/Overleaf-47A141?style=for-the-badge&logo=Overleaf&logoColor=white"/>]
+
 Kerangka laporan lateX ini dibuat untuk memudahkan standardisasi bentuk laporan praktikum, memudahkan pihak dosen dan mahasiswa dalam membuat laporan praktikum dengan struktur yang jelas serta dapat dimodifikasi sesuai dengan kebutuhan.
 kerangka laporan bebas untuk digunakan dan diadopsi oleh siapapun, jangan lupa untuk mencantum credit kepada pengembang. Saran dan perbaikan sangat dibutuhkan untuk perkembangan kerangka laporan ini.
 
@@ -33,5 +35,5 @@ Perangkat lunak yang dapat digunakan untuk mengakses file ini antara lain,
 
 ## Pengembang
 
-- [@justraven](https://github.com/justraven) [<img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white" />](https://www.linkedin.com/in/alimsatria)
+- [@justraven](https://github.com/justraven)  [<img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white" />](https://www.linkedin.com/in/alimsatria)
 
